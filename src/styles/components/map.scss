@@ -1,0 +1,24 @@
+.mapboxgl{
+  &-map{
+    width:100%;
+    max-width: 1000px;
+    min-height: 500px;
+    margin: 0 auto 15px auto;
+  }
+  &-missing-css{
+    display: none;
+  }
+}
+
+.map-marker{
+  $size: 20px;
+  $color: red;
+  width:$size;
+  height:$size;
+  border:2px solid $color;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  background-color: transparentize($color, .75);
+  cursor:help;
+}

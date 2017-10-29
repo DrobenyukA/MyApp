@@ -1,13 +1,6 @@
+import {GOOGLE} from "../constants/config.constants";
 
-const OPTIONS = {
-    client_id:"415184451289-1nek46fjgir455s2jek05aklnmff521d.apps.googleusercontent.com",
-    fetch_basic_profile: true,
-    scope: "profile"
-};
-
-
-
-function appendScript(changeState) {
+export function appendScript(changeState) {
     let container = document.createElement('script');
     container.id = "google-platform";
     container.src = 'https://apis.google.com/js/platform.js';
@@ -15,25 +8,29 @@ function appendScript(changeState) {
     container.onload = () => authenticateUser(changeState);
 }
 
-function authenticateUser(changeState){
+export function authenticateUser(changeState){
     window.gapi.load('auth2', () => {
         changeState();
         if (!gapi.auth2.getAuthInstance()) {
-            gapi.auth2.init(OPTIONS);
+            gapi.auth2.init({
+                client_id:GOOGLE.CLIENT_ID,
+                fetch_basic_profile: true,
+                scope: "profile"
+            });
         }
     });
 }
 
-function login(responseHandler){
+export function login(responseHandler){
     const auth2 = window.gapi.auth2.getAuthInstance();
-    if (auth2 != null) {
+    if (auth2 !== null) {
         auth2.signIn().then(googleUser => responseHandler(googleUser));
     }
 }
 
-function logout(responseHandler){
+export function logout(responseHandler){
     const auth2 = window.gapi.auth2.getAuthInstance();
-    if (auth2 != null) {
+    if (auth2 !== null) {
         auth2.signOut().then(res => responseHandler(res))
     }
 }
