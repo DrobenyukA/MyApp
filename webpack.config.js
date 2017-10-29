@@ -7,7 +7,7 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const production = (process.env.NODE_ENV === 'production');
 
 module.exports = {
-    entry: path.resolve(__dirname, './src/js/app.js'),
+    entry: [path.resolve(__dirname, './src/js/app.js')],
     output: {
         filename: 'js/[name].bundle.js',
         path: path.resolve(__dirname, "./dist")
@@ -16,7 +16,8 @@ module.exports = {
         rules: [
             {
                 test: /\.(js|jsx)$/,
-                loader: "babel-loader"
+                loader: "babel-loader",
+                exclude: /(node_modules)/
 
             },
             {
