@@ -1,26 +1,30 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import ReactMapboxGl, { Layer, Feature, ZoomControl } from "react-mapbox-gl";
+import ReactMapboxGl, { Marker, Layer, Feature, ZoomControl } from "react-mapbox-gl";
 
 import LoginBtn from "../components/LoginBtn";
 import LogoutBtn from "../components/LogoutBtn";
 import UserService from "../services/user.service";
 import MapService from "../services/map.service";
+import VenuesService from "../services/venues.service";
 import {loginAction, logoutAction} from "../actions/user.actions";
+import {addQuery, deleteQuery} from "../actions/queries.actions";
 import {updateMap} from "../actions/map.actions";
+import {storeVenues} from "../actions/venues.actions";
 import {MAPBOX} from "../constants/config.constants";
 import Search from "../components/SearchComponent";
+import Queries from "../components/Queries.component";
+import Venues from "../components/Venues.component";
 
 const Map = ReactMapboxGl({
     accessToken: MAPBOX.TOKEN
 });
 
-//https://api.foursquare.com/v2/venues/explore?client_id=SY3ME45YAA3NV5JCWGK12ASUU2QNGXJKV5S0PC2E10XH4CNM&client_secret=BSET1UJ4P1024WTQRNV5Q2SKE2PTWQYN0AEVFIWHIJKCCW2R&v=20170801&ll=40.7243,-74.0018&query=coffee&limit1
-
 class MyApp extends Component {
 
     constructor(props) {
-        super(props)
+        super(props);
+        this.fetchVenues = this.fetchVenues.bind(this)
     }
 
     getButtons () {
@@ -30,18 +34,25 @@ class MyApp extends Component {
             <LoginBtn responseHandler={(googleUser) => login(UserService.mapUserFields(googleUser))}/>
     }
 
-    fetchVenues(value){
-        const query = value;
-        console.log(value);
+    async fetchVenues(value){
+        const {map, storeQuery, storeVenues}= this.props;
+        storeQuery({
+            query: value,
+            radius: map.radius.label,
+            ...map.center,
+            time: Date.now()
+        });
+        const venues = await VenuesService.getVenues(value, map);
+        if (venues) storeVenues(venues);
     }
 
-    updateMap(map){
+    getCurrentLocation(map){
         const center = map.getCenter();
+        //TODO: find more stable solution to take border point
         const border = map.getBounds()._sw;
         const radius = MapService.getDistance(center, border);
         const params = { center, radius };
         this.props.updateMap(params)
-
     }
 
     render() {
@@ -49,14 +60,30 @@ class MyApp extends Component {
             <div>
                 { this.getButtons() }
                 MyApp container
+                <Queries queries={this.props.queries} deleteQuery={this.props.deleteQuery}/>
                 <Search action={this.fetchVenues} />
                 <Map
-                    onMoveEnd={(map)=>this.updateMap(map)}
+                    onMoveEnd={(map)=>this.getCurrentLocation(map)}
                     style={MAPBOX.TILES}
                     zoom={MAPBOX.ZOOM}
                     containerStyle={MAPBOX.STYLES}>
                     <ZoomControl position={MAPBOX.CONTROL_POSITION}/>
+                    {
+                        this.props.venues.map(item=>{
+                            return(
+
+                                <Marker
+                                    key={item.id}
+                                    coordinates={[item.location.lng, item.location.lat]}
+                                    anchor="bottom">
+                                    <button>H</button>
+                                </Marker>
+
+                            )
+                        })
+                    }
                 </Map>
+                <Venues venues={this.props.venues}/>
             </div>
         )
     }
@@ -64,15 +91,21 @@ class MyApp extends Component {
 
 const mapStateToProps = (store) => {
     return {
-        user: store.user
+        user: store.user,
+        map: store.map,
+        queries: store.queries,
+        venues: store.venues
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        login: (user) => dispatch(loginAction(user)),
+        login: user => dispatch(loginAction(user)),
         logout: () => dispatch(logoutAction()),
-        updateMap: (params) => dispatch(updateMap(params))
+        updateMap: params => dispatch(updateMap(params)),
+        storeQuery: query => dispatch(addQuery(query)),
+        deleteQuery: time => dispatch(deleteQuery(time)),
+        storeVenues: venues => dispatch(storeVenues(venues))
     }
 };
 

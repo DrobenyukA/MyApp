@@ -8,7 +8,7 @@ export const MAPBOX = {
         lng: -0.11980192248290678,
     },
     /** Attention! This value should be string **/
-    ZOOM: "8",
+    ZOOM: "9",
     STYLES: {
         height: "500px",
         width: "1000px",
@@ -18,3 +18,9 @@ export const MAPBOX = {
     CONTROL_POSITION: "topLeft"
 };
 
+export const VENUES = {
+    SERVICE_URL: "https://api.foursquare.com/v2/venues/search",
+    CLIENT_ID: "SY3ME45YAA3NV5JCWGK12ASUU2QNGXJKV5S0PC2E10XH4CNM",
+    SECRET: "BSET1UJ4P1024WTQRNV5Q2SKE2PTWQYN0AEVFIWHIJKCCW2R",
+
+};
