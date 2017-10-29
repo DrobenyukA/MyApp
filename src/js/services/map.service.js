@@ -1,6 +1,7 @@
 import turf from "turf";
 
 const separator = " ";
+const ONE_KILOMETER = 1;
 
 function getDistance(center, border, units){
     const from = turf.point([center.lng, center.lat]);
@@ -20,9 +21,10 @@ function getLabel(value, units="kilometers"){
 };
 
 function formatKilometersValue(value, units){
-    if (value > 1 ){
+    if (value > ONE_KILOMETER ){
        return [parseFloat(value).toFixed(2), units].join(separator);
     } else {
+        /* Convert kilometers into meters*/
        return [parseFloat(value).toFixed(3) * 1000, "meters"].join(separator);
     }
 };

@@ -7,21 +7,22 @@ class LoginBtn extends React.Component {
 
     constructor(props) {
         super(props);
+
         this.state = {
             disabled: true
         };
     }
     
-    clickHandler () {
+    clickHandler = () => {
         const {responseHandler} = this.props;
         GoogleService.login(responseHandler)
-    }
+    };
 
-    render () {
+    render() {
 
         return (
-            <button disabled={this.state.disabled} onClick={this.clickHandler.bind(this)}>
-                Login with google
+            <button className="btn btn-primary" disabled={this.state.disabled} onClick={this.clickHandler}>
+                Login
             </button>
         )
     }

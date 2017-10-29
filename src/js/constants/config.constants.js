@@ -1,4 +1,6 @@
-export const GOOGLE = {};
+export const GOOGLE = {
+    CLIENT_ID:"415184451289-1nek46fjgir455s2jek05aklnmff521d.apps.googleusercontent.com",
+};
 
 export const MAPBOX = {
     TOKEN: "pk.eyJ1IjoiZHJvYmVueXVrIiwiYSI6ImNqOWJjeDlmZjFkdXYycnRjcXI1eGw4cjMifQ.M22KrSlGvEUBpq_A07LfkQ",
@@ -9,12 +11,6 @@ export const MAPBOX = {
     },
     /** Attention! This value should be string **/
     ZOOM: "9",
-    STYLES: {
-        height: "500px",
-        width: "1000px",
-        marginLeft: "auto",
-        marginRight: "auto"
-    },
     CONTROL_POSITION: "topLeft"
 };
 
