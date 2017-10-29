@@ -13,8 +13,8 @@ const VenuesTable = (props) => {
                     <th>Name</th>
                     <th>City</th>
                     <th>Street Address</th>
-                    <th>Latitude</th>
-                    <th>Longitude</th>
+                    <th className="hidden-xs">Latitude</th>
+                    <th className="hidden-xs">Longitude</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -25,8 +25,8 @@ const VenuesTable = (props) => {
                                 <td>{item.name}</td>
                                 <td>{VenuesService.getCity(item.location)}</td>
                                 <td>{VenuesService.getAddress(item.location)}</td>
-                                <td>{item.location.lat}</td>
-                                <td>{item.location.lng}</td>
+                                <td className="hidden-xs">{item.location.lat}</td>
+                                <td className="hidden-xs">{item.location.lng}</td>
                             </tr>
                         )
                     )
