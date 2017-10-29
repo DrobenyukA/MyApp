@@ -10,7 +10,7 @@ export const MAPBOX = {
         lng: -0.11980192248290678,
     },
     /** Attention! This value should be string **/
-    ZOOM: "9",
+    ZOOM: "8",
     CONTROL_POSITION: "topLeft"
 };
 

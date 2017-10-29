@@ -4,8 +4,8 @@ import {MAPBOX} from "../constants/config.constants";
 const defaultState = {
     center: MAPBOX.CENTER,
     radius: {
-        label: "100 kilometers",
-        value: 100
+        label: "100.00 kilometers",
+        value: 100.00
     }
 };
 
